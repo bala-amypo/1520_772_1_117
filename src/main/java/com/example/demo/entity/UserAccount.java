@@ -92,7 +92,7 @@ public class e{
         this.password = password;
         this.role = role;
         this.status = status;
-        this.createdAt = createdAt;
+        this.createdAt = LocalDateTime.now();
     }
     public e() {
     }
