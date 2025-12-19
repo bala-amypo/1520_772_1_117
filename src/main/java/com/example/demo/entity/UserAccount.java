@@ -28,7 +28,7 @@ public class e{
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt ;
     public enum Role{
         ADMIN, USER, AUDITOR
     }
