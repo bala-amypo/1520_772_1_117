@@ -1,43 +1,68 @@
-package com.example.demo.controller;
+package com.example.demo.entity;
 
-import com.example.demo.entity.UserAccount;
-import com.example.demo.service.UserAccountService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-import java.util.List;
+@Entity
+@Table(
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "employeeId"),
+        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email")
+    }
+)
+public class UserAccount {
 
-@RestController
-@RequestMapping("/api/users")
-public class UserAccountController {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final UserAccountService userService;
+    private String employeeId;
+    private String username;
+    private String email;
+    private String password;
+    private String role;
+    private String status;
+    private LocalDateTime createdAt;
 
-    public UserAccountController(UserAccountService userService) {
-        this.userService = userService;
+    public UserAccount() {}
+
+    public UserAccount(Long id, String employeeId, String username, String email, String password, String role, String status, LocalDateTime createdAt) {
+        this.id = id;
+        this.employeeId = employeeId;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.status = status;
+        this.createdAt = createdAt;
     }
 
-    @PostMapping
-    public ResponseEntity<UserAccount> createUser(@RequestBody UserAccount user) {
-        UserAccount created = userService.createUser(user);
-        return ResponseEntity.ok(created);
+    @PrePersist
+    public void prePersist() {
+        if (status == null) {
+            status = "ACTIVE";
+        }
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserAccount> getUserById(@PathVariable Long id) {
-        UserAccount user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
-    }
+    public Long getId() { return id; }
+    public String getEmployeeId() { return employeeId; }
+    public String getUsername() { return username; }
+    public String getEmail() { return email; }
+    public String getPassword() { return password; }
+    public String getRole() { return role; }
+    public String getStatus() { return status; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
-    @PutMapping("/{id}/status")
-    public ResponseEntity<UserAccount> updateUserStatus(@PathVariable Long id, @RequestParam String status) {
-        UserAccount updated = userService.updateUserStatus(id, status);
-        return ResponseEntity.ok(updated);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<UserAccount>> getAllUsers() {
-        List<UserAccount> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
+    public void setUsername(String username) { this.username = username; }
+    public void setEmail(String email) { this.email = email; }
+    public void setPassword(String password) { this.password = password; }
+    public void setRole(String role) { this.role = role; }
+    public void setStatus(String status) { this.status = status; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
