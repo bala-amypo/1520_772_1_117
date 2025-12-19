@@ -20,9 +20,7 @@ public class ViolationRecordServiceImpl implements ViolationRecordService {
 
     @Override
     public ViolationRecord logViolation(ViolationRecord violation) {
-        if (violation.getDetectedAt() == null) {
-            violation.setDetectedAt(LocalDateTime.now());
-        }
+        violation.setDetectedAt(LocalDateTime.now());
         if (violation.getResolved() == null) {
             violation.setResolved(false);
         }
@@ -30,16 +28,16 @@ public class ViolationRecordServiceImpl implements ViolationRecordService {
     }
 
     @Override
-    public ViolationRecord markResolved(Long id) {
-        ViolationRecord record = violationRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Violation not found"));
-        record.setResolved(true);
-        return violationRepo.save(record);
+    public List<ViolationRecord> getViolationsByUser(Long userId) {
+        return violationRepo.findByUserId(userId);
     }
 
     @Override
-    public List<ViolationRecord> getViolationsByUser(Long userId) {
-        return violationRepo.findByUserId(userId);
+    public ViolationRecord markResolved(Long id) {
+        ViolationRecord violation = violationRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Violation not found"));
+        violation.setResolved(true);
+        return violationRepo.save(violation);
     }
 
     @Override

@@ -20,12 +20,10 @@ public class PolicyRuleServiceImpl implements PolicyRuleService {
 
     @Override
     public PolicyRule createRule(PolicyRule rule) {
-        // Check unique ruleCode
-        ruleRepo.findByRuleCode(rule.getRuleCode()).ifPresent(r -> {
-            throw new IllegalArgumentException("Rule code already exists");
-        });
-
-        if (rule.getActive() == null) rule.setActive(true);
+        ruleRepo.findAll().stream()
+                .filter(r -> r.getRuleCode().equals(rule.getRuleCode()))
+                .findFirst()
+                .ifPresent(r -> { throw new IllegalArgumentException("Rule code already exists"); });
         return ruleRepo.save(rule);
     }
 
@@ -33,12 +31,10 @@ public class PolicyRuleServiceImpl implements PolicyRuleService {
     public PolicyRule updateRule(Long id, PolicyRule updated) {
         PolicyRule existing = ruleRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
-
         existing.setDescription(updated.getDescription());
         existing.setSeverity(updated.getSeverity());
         existing.setConditionsJson(updated.getConditionsJson());
         existing.setActive(updated.getActive());
-
         return ruleRepo.save(existing);
     }
 
@@ -49,7 +45,9 @@ public class PolicyRuleServiceImpl implements PolicyRuleService {
 
     @Override
     public Optional<PolicyRule> getRuleByCode(String ruleCode) {
-        return ruleRepo.findByRuleCode(ruleCode);
+        return ruleRepo.findAll().stream()
+                .filter(r -> r.getRuleCode().equals(ruleCode))
+                .findFirst();
     }
 
     @Override

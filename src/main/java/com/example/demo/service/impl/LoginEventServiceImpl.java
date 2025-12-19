@@ -22,23 +22,15 @@ public class LoginEventServiceImpl implements LoginEventService {
 
     @Override
     public LoginEvent recordLogin(LoginEvent event) {
-        // Validate required fields
         if (event.getIpAddress() == null || event.getDeviceId() == null) {
-            throw new IllegalArgumentException("IP address and deviceId cannot be null");
+            throw new IllegalArgumentException("IP address and device ID are required");
         }
-
-        // Set timestamp if missing
         if (event.getTimestamp() == null) {
             event.setTimestamp(LocalDateTime.now());
         }
-
-        // Save login event
-        LoginEvent savedEvent = loginRepo.save(event);
-
-        // Trigger rule evaluation
-        ruleEvaluator.evaluateLoginEvent(savedEvent);
-
-        return savedEvent;
+        LoginEvent saved = loginRepo.save(event);
+        ruleEvaluator.evaluateLoginEvent(saved);
+        return saved;
     }
 
     @Override
