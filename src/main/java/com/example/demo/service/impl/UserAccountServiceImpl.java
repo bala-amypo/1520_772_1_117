@@ -23,21 +23,16 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public UserAccount createUser(UserAccount user) {
-        // Validate uniqueness
         userRepo.findByUsername(user.getUsername()).ifPresent(u -> {
             throw new IllegalArgumentException("Username already exists");
         });
         userRepo.findByEmail(user.getEmail()).ifPresent(u -> {
             throw new IllegalArgumentException("Email already exists");
         });
-
-        // Hash password
         user.setPassword(encoder.encode(user.getPassword()));
-
-        // Set defaults
-        if (user.getRole() == null) user.setRole("USER");
-        if (user.getStatus() == null) user.setStatus("ACTIVE");
-
+        if (user.getRole() == null) {
+            user.setRole("USER");
+        }
         return userRepo.save(user);
     }
 
