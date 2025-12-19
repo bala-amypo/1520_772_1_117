@@ -1,68 +1,38 @@
-package com.example.demo.entity;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import com.example.demo.entity.UserAccount;
+import com.example.demo.service.UserAccountService;
+import org.springframework.web.bind.annotation.*;
 
-@Entity
-@Table(
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "employeeId"),
-        @UniqueConstraint(columnNames = "username"),
-        @UniqueConstraint(columnNames = "email")
-    }
-)
-public class UserAccount {
+import java.util.List;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@RestController
+@RequestMapping("/api/users")
+public class UserAccountController {
 
-    private String employeeId;
-    private String username;
-    private String email;
-    private String password;
-    private String role;
-    private String status;
-    private LocalDateTime createdAt;
+    private final UserAccountService userService;
 
-    public UserAccount() {}
-
-    public UserAccount(Long id, String employeeId, String username, String email, String password, String role, String status, LocalDateTime createdAt) {
-        this.id = id;
-        this.employeeId = employeeId;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.status = status;
-        this.createdAt = createdAt;
+    public UserAccountController(UserAccountService userService) {
+        this.userService = userService;
     }
 
-    @PrePersist
-    public void prePersist() {
-        if (status == null) {
-            status = "ACTIVE";
-        }
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
+    @PostMapping
+    public UserAccount create(@RequestBody UserAccount user) {
+        return userService.createUser(user);
     }
 
-    public Long getId() { return id; }
-    public String getEmployeeId() { return employeeId; }
-    public String getUsername() { return username; }
-    public String getEmail() { return email; }
-    public String getPassword() { return password; }
-    public String getRole() { return role; }
-    public String getStatus() { return status; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    @GetMapping("/{id}")
+    public UserAccount getById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
 
-    public void setId(Long id) { this.id = id; }
-    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
-    public void setUsername(String username) { this.username = username; }
-    public void setEmail(String email) { this.email = email; }
-    public void setPassword(String password) { this.password = password; }
-    public void setRole(String role) { this.role = role; }
-    public void setStatus(String status) { this.status = status; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    @PutMapping("/{id}/status")
+    public UserAccount updateStatus(@PathVariable Long id, @RequestParam String status) {
+        return userService.updateUserStatus(id, status);
+    }
+
+    @GetMapping
+    public List<UserAccount> getAll() {
+        return userService.getAllUsers();
+    }
 }
