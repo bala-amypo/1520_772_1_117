@@ -3,7 +3,6 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.LoginEvent;
 import com.example.demo.repository.LoginEventRepository;
 import com.example.demo.service.LoginEventService;
-import com.example.demo.util.RuleEvaluationUtil;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,24 +12,20 @@ import java.util.List;
 public class LoginEventServiceImpl implements LoginEventService {
 
     private final LoginEventRepository loginRepo;
-    private final RuleEvaluationUtil ruleEvaluator;
 
-    public LoginEventServiceImpl(LoginEventRepository loginRepo, RuleEvaluationUtil ruleEvaluator) {
+    public LoginEventServiceImpl(LoginEventRepository loginRepo) {
         this.loginRepo = loginRepo;
-        this.ruleEvaluator = ruleEvaluator;
     }
 
     @Override
     public LoginEvent recordLogin(LoginEvent event) {
         if (event.getIpAddress() == null || event.getDeviceId() == null) {
-            throw new IllegalArgumentException("IP address and device ID are required");
+            throw new IllegalArgumentException("IP and device required");
         }
         if (event.getTimestamp() == null) {
             event.setTimestamp(LocalDateTime.now());
         }
-        LoginEvent saved = loginRepo.save(event);
-        ruleEvaluator.evaluateLoginEvent(saved);
-        return saved;
+        return loginRepo.save(event);
     }
 
     @Override

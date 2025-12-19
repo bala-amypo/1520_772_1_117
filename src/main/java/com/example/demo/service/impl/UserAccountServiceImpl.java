@@ -4,7 +4,6 @@ import com.example.demo.entity.UserAccount;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +13,9 @@ import java.util.Optional;
 public class UserAccountServiceImpl implements UserAccountService {
 
     private final UserAccountRepository userRepo;
-    private final PasswordEncoder encoder;
 
-    public UserAccountServiceImpl(UserAccountRepository userRepo, PasswordEncoder encoder) {
+    public UserAccountServiceImpl(UserAccountRepository userRepo) {
         this.userRepo = userRepo;
-        this.encoder = encoder;
     }
 
     @Override
@@ -29,7 +26,6 @@ public class UserAccountServiceImpl implements UserAccountService {
         userRepo.findByEmail(user.getEmail()).ifPresent(u -> {
             throw new IllegalArgumentException("Email already exists");
         });
-        user.setPassword(encoder.encode(user.getPassword()));
         if (user.getRole() == null) {
             user.setRole("USER");
         }
