@@ -1,91 +1,65 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
 public class ViolationRecord {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private long userId; 
-    private long policyRuleId;
-    private long eventId;
-    private String voilationType;
+    private Long id;
+
+    private Long userId;
+    private Long policyRuleId;
+    private Long eventId;
+    private String violationType;
     private String details;
     private String severity;
     private LocalDateTime detectedAt;
-    private boolean resolved;
-    public long getId() {
-        return id;
-    }
-    public void setId(long id) {
+    private Boolean resolved;
+
+    public ViolationRecord() {}
+
+    public ViolationRecord(Long id, Long userId, Long policyRuleId, Long eventId, String violationType, String details, String severity, LocalDateTime detectedAt, Boolean resolved) {
         this.id = id;
-    }
-    public long getUserId() {
-        return userId;
-    }
-    public void setUserId(long userId) {
         this.userId = userId;
-    }
-    public long getPolicyRuleId() {
-        return policyRuleId;
-    }
-    public void setPolicyRuleId(long policyRuleId) {
         this.policyRuleId = policyRuleId;
-    }
-    public long getEventId() {
-        return eventId;
-    }
-    public void setEventId(long eventId) {
         this.eventId = eventId;
-    }
-    public String getVoilationType() {
-        return voilationType;
-    }
-    public void setVoilationType(String voilationType) {
-        this.voilationType = voilationType;
-    }
-    public String getDetails() {
-        return details;
-    }
-    public void setDetails(String details) {
+        this.violationType = violationType;
         this.details = details;
-    }
-    public String getSeverity() {
-        return severity;
-    }
-    public void setSeverity(String severity) {
         this.severity = severity;
-    }
-    public LocalDateTime getDetectedAt() {
-        return detectedAt;
-    }
-    public void setDetectedAt(LocalDateTime detectedAt) {
         this.detectedAt = detectedAt;
-    }
-    public boolean isResolved() {
-        return resolved;
-    }
-    public void setResolved(boolean resolved) {
         this.resolved = resolved;
     }
-    public ViolationRecord(long id, long userId, long policyRuleId, long eventId, String voilationType, String details,
-            String severity, boolean resolved) {
-        this.id = id;
-        this.userId = userId;
-        this.policyRuleId = policyRuleId;
-        this.eventId = eventId;
-        this.voilationType = voilationType;
-        this.details = details;
-        this.severity = severity;
-        this.resolved = resolved;
-        this.detectedAt = LocalDateTime.now();
+
+    @PrePersist
+    public void prePersist() {
+        if (detectedAt == null) {
+            detectedAt = LocalDateTime.now();
+        }
+        if (resolved == null) {
+            resolved = false;
+        }
     }
-    public ViolationRecord() {
-    }
+
+    public Long getId() { return id; }
+    public Long getUserId() { return userId; }
+    public Long getPolicyRuleId() { return policyRuleId; }
+    public Long getEventId() { return eventId; }
+    public String getViolationType() { return violationType; }
+    public String getDetails() { return details; }
+    public String getSeverity() { return severity; }
+    public LocalDateTime getDetectedAt() { return detectedAt; }
+    public Boolean getResolved() { return resolved; }
+
+    public void setId(Long id) { this.id = id; }
+    public void setUserId(Long userId) { this.userId = userId; }
+    public void setPolicyRuleId(Long policyRuleId) { this.policyRuleId = policyRuleId; }
+    public void setEventId(Long eventId) { this.eventId = eventId; }
+    public void setViolationType(String violationType) { this.violationType = violationType; }
+    public void setDetails(String details) { this.details = details; }
+    public void setSeverity(String severity) { this.severity = severity; }
+    public void setDetectedAt(LocalDateTime detectedAt) { this.detectedAt = detectedAt; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }

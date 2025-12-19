@@ -1,127 +1,68 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import org.hibernate.annotations.CreationTimestamp;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
+@Table(
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "employeeId"),
+        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email")
+    }
+)
 public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String employeeid;
-
-    @Column(unique = true, nullable = false)
+    private String employeeId;
     private String username;
-
-    @Column(unique = true, nullable = false)
     private String email;
-
     private String password;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
-    @CreationTimestamp
-    @Column(updatable = false)
+    private String role;
+    private String status;
     private LocalDateTime createdAt;
 
-    public enum Role {
-        ADMIN, USER, AUDITOR
-    }
+    public UserAccount() {}
 
-    public enum Status {
-        ACTIVE, SUSPENDED
-    }
-
-    public UserAccount() {
-    }
-
-    public UserAccount(long id, String employeeid, String username, String email, String password, Role role, Status status) {
+    public UserAccount(Long id, String employeeId, String username, String email, String password, String role, String status, LocalDateTime createdAt) {
         this.id = id;
-        this.employeeid = employeeid;
+        this.employeeId = employeeId;
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
         this.status = status;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getEmployeeid() {
-        return employeeid;
-    }
-
-    public void setEmployeeid(String employeeid) {
-        this.employeeid = employeeid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    @PrePersist
+    public void prePersist() {
+        if (status == null) {
+            status = "ACTIVE";
+        }
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
+
+    public Long getId() { return id; }
+    public String getEmployeeId() { return employeeId; }
+    public String getUsername() { return username; }
+    public String getEmail() { return email; }
+    public String getPassword() { return password; }
+    public String getRole() { return role; }
+    public String getStatus() { return status; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+
+    public void setId(Long id) { this.id = id; }
+    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
+    public void setUsername(String username) { this.username = username; }
+    public void setEmail(String email) { this.email = email; }
+    public void setPassword(String password) { this.password = password; }
+    public void setRole(String role) { this.role = role; }
+    public void setStatus(String status) { this.status = status; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

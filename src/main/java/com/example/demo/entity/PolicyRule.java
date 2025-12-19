@@ -1,73 +1,48 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "ruleCode")
+    }
+)
 public class PolicyRule {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String ruleCode; 
+    private Long id;
+
+    private String ruleCode;
     private String description;
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Sev severty;
+    private String severity;
+    @Column(columnDefinition = "TEXT")
     private String conditionsJson;
-    private boolean active;
-    public enum Sev{
-        LOW,MEDIUM,HIGH,CRITICAL
-    }
-    public long getId() {
-        return id;
-    }
-    public void setId(long id) {
-        this.id = id;
-    }
-    public String getRuleCode() {
-        return ruleCode;
-    }
-    public void setRuleCode(String ruleCode) {
-        this.ruleCode = ruleCode;
-    }
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public Sev getSeverty() {
-        return severty;
-    }
-    public void setSeverty(Sev severty) {
-        this.severty = severty;
-    }
-    public String getConditionsJson() {
-        return conditionsJson;
-    }
-    public void setConditionsJson(String conditionsJson) {
-        this.conditionsJson = conditionsJson;
-    }
-    public boolean isActive() {
-        return active;
-    }
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-    public PolicyRule(long id, String ruleCode, String description, Sev severty, String conditionsJson,
-            boolean active) {
+    private Boolean active;
+
+    public PolicyRule() {}
+
+    public PolicyRule(Long id, String ruleCode, String description, String severity, String conditionsJson, Boolean active) {
         this.id = id;
         this.ruleCode = ruleCode;
         this.description = description;
-        this.severty = severty;
+        this.severity = severity;
         this.conditionsJson = conditionsJson;
         this.active = active;
     }
-    public PolicyRule() {
-    }
+
+    public Long getId() { return id; }
+    public String getRuleCode() { return ruleCode; }
+    public String getDescription() { return description; }
+    public String getSeverity() { return severity; }
+    public String getConditionsJson() { return conditionsJson; }
+    public Boolean getActive() { return active; }
+
+    public void setId(Long id) { this.id = id; }
+    public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }
+    public void setDescription(String description) { this.description = description; }
+    public void setSeverity(String severity) { this.severity = severity; }
+    public void setConditionsJson(String conditionsJson) { this.conditionsJson = conditionsJson; }
+    public void setActive(Boolean active) { this.active = active; }
 }
