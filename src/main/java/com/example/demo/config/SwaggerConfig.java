@@ -13,7 +13,7 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .servers(List.of(
-                        new Server().url("https://9328.408procr.amypo.ai/") // This is where your Swagger UI server is hosted
+                        new Server().url("https://9539.408procr.amypo.ai/") // This is where your Swagger UI server is hosted
                 ));
     }
 }
