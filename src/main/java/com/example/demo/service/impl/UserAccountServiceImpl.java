@@ -17,7 +17,14 @@ public class UserAccountServiceImpl implements UserAccountService {
     public UserAccountServiceImpl(UserAccountRepository userRepo) {
         this.userRepo = userRepo;
     }
-
+    public UserAccountServiceImpl(
+        UserAccountRepository repository,
+        PasswordEncoder passwordEncoder
+    ) {
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+    }
+    
     @Override
     public UserAccount createUser(UserAccount user) {
         userRepo.findByUsername(user.getUsername()).ifPresent(u -> {

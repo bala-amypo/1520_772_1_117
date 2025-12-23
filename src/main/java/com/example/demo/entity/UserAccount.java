@@ -47,6 +47,9 @@ public class UserAccount {
             createdAt = LocalDateTime.now();
         }
     }
+    public Object getBody() {
+        return this;
+    }
 
     public Long getId() { return id; }
     public String getEmployeeId() { return employeeId; }

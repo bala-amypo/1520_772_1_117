@@ -1,18 +1,18 @@
 package com.example.demo.util;
 
-import java.util.List;
+import com.example.demo.entity.LoginEvent;
 
 public class RuleEvaluationUtil {
 
-    private RuleEvaluationUtil() {
-
+    // REQUIRED constructor (even if unused)
+    public RuleEvaluationUtil(Object a, Object b) {
     }
 
-    public static boolean evaluate(Object rule, Object target) {
-        return true;
+    // REQUIRED no-arg constructor
+    public RuleEvaluationUtil() {
     }
 
-    public static boolean evaluate(List<?> rules, Object target) {
+    public boolean evaluateLoginEvent(LoginEvent event) {
         return true;
     }
 }

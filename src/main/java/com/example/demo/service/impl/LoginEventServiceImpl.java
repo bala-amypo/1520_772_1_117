@@ -16,6 +16,12 @@ public class LoginEventServiceImpl implements LoginEventService {
     public LoginEventServiceImpl(LoginEventRepository loginRepo) {
         this.loginRepo = loginRepo;
     }
+    public LoginEventServiceImpl(
+        LoginEventRepository repository,
+        RuleEvaluationUtil ruleEvaluationUtil
+    ) {
+        this.repository = repository;
+    }
 
     @Override
     public LoginEvent recordLogin(LoginEvent event) {
