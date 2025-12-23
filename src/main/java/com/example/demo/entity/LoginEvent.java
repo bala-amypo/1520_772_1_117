@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "login_events")
 public class LoginEvent {
 
     @Id
@@ -17,7 +18,8 @@ public class LoginEvent {
     private LocalDateTime timestamp;
     private String loginStatus;
 
-    public LoginEvent() {}
+    public LoginEvent() {
+    }
 
     public LoginEvent(Long id, Long userId, String ipAddress, String location, String deviceId, LocalDateTime timestamp, String loginStatus) {
         this.id = id;
@@ -31,24 +33,64 @@ public class LoginEvent {
 
     @PrePersist
     public void prePersist() {
-        if (timestamp == null) {
-            timestamp = LocalDateTime.now();
+        if (this.timestamp == null) {
+            this.timestamp = LocalDateTime.now();
         }
     }
 
-    public Long getId() { return id; }
-    public Long getUserId() { return userId; }
-    public String getIpAddress() { return ipAddress; }
-    public String getLocation() { return location; }
-    public String getDeviceId() { return deviceId; }
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public String getLoginStatus() { return loginStatus; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setId(Long id) { this.id = id; }
-    public void setUserId(Long userId) { this.userId = userId; }
-    public void setIpAddress(String ipAddress) { this.ipAddress = ipAddress; }
-    public void setLocation(String location) { this.location = location; }
-    public void setDeviceId(String deviceId) { this.deviceId = deviceId; }
-    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
-    public void setLoginStatus(String loginStatus) { this.loginStatus = loginStatus; }
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public String getLoginStatus() {
+        return loginStatus;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setLoginStatus(String loginStatus) {
+        this.loginStatus = loginStatus;
+    }
 }
