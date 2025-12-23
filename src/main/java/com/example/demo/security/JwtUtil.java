@@ -3,47 +3,45 @@ package com.example.demo.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 public class JwtUtil {
 
-    private final String secret;
+    private final SecretKey key;
     private final long validityInMs;
     private final boolean isTestMode;
 
     public JwtUtil(String secret, long validityInMs, boolean isTestMode) {
-        this.secret = secret;
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.validityInMs = validityInMs;
         this.isTestMode = isTestMode;
     }
 
     public String generateToken(String subject, Long userId, String email, String role) {
-        Claims claims = Jwts.claims().setSubject(subject);
-        claims.put("userId", userId);
-        claims.put("email", email);
-        claims.put("role", role);
         Date now = new Date();
         Date expiry = new Date(now.getTime() + validityInMs);
+
         return Jwts.builder()
-                .setClaims(claims)
+                .setSubject(subject)
+                .claim("userId", userId)
+                .claim("email", email)
+                .claim("role", role)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
         }
-    }
-
-    private Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
     public String getEmail(String token) {
@@ -55,7 +53,14 @@ public class JwtUtil {
     }
 
     public Long getUserId(String token) {
-        Object v = getClaims(token).get("userId");
-        return v == null ? null : Long.valueOf(v.toString());
+        return getClaims(token).get("userId", Long.class);
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
