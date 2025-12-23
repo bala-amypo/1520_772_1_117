@@ -24,7 +24,6 @@
 
     <dependencies>
 
-        <!-- EXISTING DEPENDENCIES (UNCHANGED) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -72,15 +71,11 @@
             <version>3.5.6</version>
         </dependency>
 
-        <!-- ADDED DEPENDENCIES (DO NOT REMOVE) -->
-
-        <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- JWT -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -101,7 +96,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Validation (DTO annotations support) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
