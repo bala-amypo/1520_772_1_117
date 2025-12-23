@@ -27,12 +27,12 @@ public class PolicyRuleController {
     }
 
     @GetMapping("/active")
-    public List<PolicyRule> active() {
+    public List<PolicyRule> getActive() {
         return ruleService.getActiveRules();
     }
 
     @GetMapping
-    public List<PolicyRule> all() {
+    public List<PolicyRule> getAll() {
         return ruleService.getAllRules();
     }
 }

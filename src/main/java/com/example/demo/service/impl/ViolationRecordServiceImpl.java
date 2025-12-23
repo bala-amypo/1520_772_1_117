@@ -4,12 +4,10 @@ import com.example.demo.entity.ViolationRecord;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.ViolationRecordRepository;
 import com.example.demo.service.ViolationRecordService;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Service
 public class ViolationRecordServiceImpl implements ViolationRecordService {
 
     private final ViolationRecordRepository violationRepo;
@@ -21,9 +19,7 @@ public class ViolationRecordServiceImpl implements ViolationRecordService {
     @Override
     public ViolationRecord logViolation(ViolationRecord violation) {
         violation.setDetectedAt(LocalDateTime.now());
-        if (violation.getResolved() == null) {
-            violation.setResolved(false);
-        }
+        violation.setResolved(false);
         return violationRepo.save(violation);
     }
 

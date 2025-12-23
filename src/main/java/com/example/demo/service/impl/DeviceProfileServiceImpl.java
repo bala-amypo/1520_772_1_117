@@ -4,13 +4,11 @@ import com.example.demo.entity.DeviceProfile;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.DeviceProfileRepository;
 import com.example.demo.service.DeviceProfileService;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class DeviceProfileServiceImpl implements DeviceProfileService {
 
     private final DeviceProfileRepository deviceRepo;
@@ -21,11 +19,10 @@ public class DeviceProfileServiceImpl implements DeviceProfileService {
 
     @Override
     public DeviceProfile registerDevice(DeviceProfile device) {
-        deviceRepo.findByDeviceId(device.getDeviceId()).ifPresent(d -> {
-            if (d.getUserId().equals(device.getUserId())) {
-                throw new IllegalArgumentException("Device already registered for user");
-            }
-        });
+        Optional<DeviceProfile> existing = deviceRepo.findByDeviceId(device.getDeviceId());
+        if (existing.isPresent() && existing.get().getUserId().equals(device.getUserId())) {
+            throw new IllegalArgumentException("Device already registered for user");
+        }
         device.setLastSeen(LocalDateTime.now());
         return deviceRepo.save(device);
     }

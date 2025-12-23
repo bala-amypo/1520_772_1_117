@@ -22,17 +22,17 @@ public class LoginEventController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<LoginEvent> byUser(@PathVariable Long userId) {
+    public List<LoginEvent> getByUser(@PathVariable Long userId) {
         return loginService.getEventsByUser(userId);
     }
 
     @GetMapping("/suspicious/{userId}")
-    public List<LoginEvent> suspicious(@PathVariable Long userId) {
+    public List<LoginEvent> getSuspicious(@PathVariable Long userId) {
         return loginService.getSuspiciousLogins(userId);
     }
 
     @GetMapping
-    public List<LoginEvent> all() {
+    public List<LoginEvent> getAll() {
         return loginService.getAllEvents();
     }
 }

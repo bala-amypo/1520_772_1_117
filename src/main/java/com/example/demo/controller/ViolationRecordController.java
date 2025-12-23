@@ -22,7 +22,7 @@ public class ViolationRecordController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<ViolationRecord> byUser(@PathVariable Long userId) {
+    public List<ViolationRecord> getByUser(@PathVariable Long userId) {
         return violationService.getViolationsByUser(userId);
     }
 
@@ -32,12 +32,12 @@ public class ViolationRecordController {
     }
 
     @GetMapping("/unresolved")
-    public List<ViolationRecord> unresolved() {
+    public List<ViolationRecord> getUnresolved() {
         return violationService.getUnresolvedViolations();
     }
 
     @GetMapping
-    public List<ViolationRecord> all() {
+    public List<ViolationRecord> getAll() {
         return violationService.getAllViolations();
     }
 }

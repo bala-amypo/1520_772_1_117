@@ -27,7 +27,7 @@ public class DeviceProfileController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<DeviceProfile> byUser(@PathVariable Long userId) {
+    public List<DeviceProfile> getByUser(@PathVariable Long userId) {
         return deviceService.getDevicesByUser(userId);
     }
 

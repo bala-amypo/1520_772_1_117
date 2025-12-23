@@ -4,12 +4,10 @@ import com.example.demo.entity.PolicyRule;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.PolicyRuleRepository;
 import com.example.demo.service.PolicyRuleService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class PolicyRuleServiceImpl implements PolicyRuleService {
 
     private final PolicyRuleRepository ruleRepo;
@@ -20,10 +18,11 @@ public class PolicyRuleServiceImpl implements PolicyRuleService {
 
     @Override
     public PolicyRule createRule(PolicyRule rule) {
-        ruleRepo.findAll().stream()
-                .filter(r -> r.getRuleCode().equals(rule.getRuleCode()))
-                .findFirst()
-                .ifPresent(r -> { throw new IllegalArgumentException("Rule code already exists"); });
+        for (PolicyRule r : ruleRepo.findAll()) {
+            if (r.getRuleCode().equals(rule.getRuleCode())) {
+                throw new IllegalArgumentException("Rule code already exists");
+            }
+        }
         return ruleRepo.save(rule);
     }
 
