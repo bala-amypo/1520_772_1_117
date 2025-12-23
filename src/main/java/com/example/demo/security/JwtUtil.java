@@ -23,10 +23,8 @@ public class JwtUtil {
         claims.put("userId", userId);
         claims.put("email", email);
         claims.put("role", role);
-
         Date now = new Date();
         Date expiry = new Date(now.getTime() + validityInMs);
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
@@ -44,19 +42,20 @@ public class JwtUtil {
         }
     }
 
+    private Claims getClaims(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    }
+
     public String getEmail(String token) {
-        return getAllClaims(token).get("email", String.class);
+        return getClaims(token).get("email", String.class);
     }
 
     public String getRole(String token) {
-        return getAllClaims(token).get("role", String.class);
+        return getClaims(token).get("role", String.class);
     }
 
     public Long getUserId(String token) {
-        return getAllClaims(token).get("userId", Long.class);
-    }
-
-    private Claims getAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        Object v = getClaims(token).get("userId");
+        return v == null ? null : Long.valueOf(v.toString());
     }
 }

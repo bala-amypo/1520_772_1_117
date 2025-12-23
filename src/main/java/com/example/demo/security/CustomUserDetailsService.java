@@ -7,11 +7,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserAccountRepository userRepo;
@@ -21,12 +19,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        UserAccount user = userRepo.findByUsername(username)
+    public UserDetails loadUserByUsername(String usernameOrEmail) {
+        UserAccount user = userRepo.findByUsername(usernameOrEmail)
+                .or(() -> userRepo.findByEmail(usernameOrEmail))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
         return new User(
-                user.getEmail(),
+                user.getUsername(),
                 user.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
         );

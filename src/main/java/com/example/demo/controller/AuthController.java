@@ -41,7 +41,12 @@ public class AuthController {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Invalid credentials");
         }
-        String token = jwtUtil.generateToken(user.getUsername());
+        String token = jwtUtil.generateToken(
+                user.getUsername(),
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
         return new JwtResponse(token, user.getId(), user.getEmail(), user.getRole());
     }
 }
