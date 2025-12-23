@@ -4,17 +4,24 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 
+@Component
 public class JwtUtil {
 
     private final SecretKey key;
     private final long validityInMs;
     private final boolean isTestMode;
 
-    public JwtUtil(String secret, long validityInMs, boolean isTestMode) {
+    public JwtUtil(
+            @Value("${jwt.secret:my-secret-key-my-secret-key-my-secret-key}") String secret,
+            @Value("${jwt.validity:3600000}") long validityInMs,
+            @Value("${jwt.testMode:false}") boolean isTestMode
+    ) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.validityInMs = validityInMs;
         this.isTestMode = isTestMode;
