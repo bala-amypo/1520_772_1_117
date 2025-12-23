@@ -38,6 +38,9 @@ public class PolicyRule {
     public String getSeverity() { return severity; }
     public String getConditionsJson() { return conditionsJson; }
     public Boolean getActive() { return active; }
+    default Object getBody() {
+        return this;
+    }
 
     public void setId(Long id) { this.id = id; }
     public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }

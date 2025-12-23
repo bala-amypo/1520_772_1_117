@@ -18,7 +18,7 @@ public class ViolationRecord {
     private String severity;
     private LocalDateTime detectedAt;
     private Boolean resolved;
-
+    
     public ViolationRecord() {}
 
     public ViolationRecord(Long id, Long userId, Long policyRuleId, Long eventId, String violationType, String details, String severity, LocalDateTime detectedAt, Boolean resolved) {
@@ -41,6 +41,9 @@ public class ViolationRecord {
         if (resolved == null) {
             resolved = false;
         }
+    }
+    public Object getBody() {
+        return this;
     }
 
     public Long getId() { return id; }

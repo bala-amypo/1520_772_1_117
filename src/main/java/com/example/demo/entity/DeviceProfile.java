@@ -47,6 +47,9 @@ public class DeviceProfile {
     public String getOsVersion() { return osVersion; }
     public LocalDateTime getLastSeen() { return lastSeen; }
     public Boolean getIsTrusted() { return isTrusted; }
+    public Object getBody() {
+        return this;
+    }
 
     public void setId(Long id) { this.id = id; }
     public void setUserId(Long userId) { this.userId = userId; }
