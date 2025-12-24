@@ -18,11 +18,15 @@ public class JwtUtil {
     private final boolean isTestMode;
 
     public JwtUtil(
-            @Value("${jwt.secret:ThisIsASuperSecureJwtSecretKeyWithAtLeast32Chars!!}") String secret,
-            @Value("${jwt.validity:3600000}") long validityInMs,
-            @Value("${jwt.testMode:false}") boolean isTestMode
+        @Value("${jwt.secret:ignored}") String secret,
+        @Value("${jwt.validity:3600000}") long validityInMs,
+        @Value("${jwt.testMode:false}") boolean isTestMode
     ) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        if (isTestMode) {
+            this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        } else {
+            this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        }
         this.validityInMs = validityInMs;
         this.isTestMode = isTestMode;
     }
