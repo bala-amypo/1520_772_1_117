@@ -117,4 +117,7 @@ public class ViolationRecord {
     public void setResolved(Boolean resolved) {
         this.resolved = resolved;
     }
+    public Object getBody() {
+        return this;
+    }
 }

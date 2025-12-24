@@ -92,4 +92,7 @@ public class DeviceProfile {
     public void setIsTrusted(Boolean isTrusted) {
         this.isTrusted = isTrusted;
     }
+    public Object getBody() {
+        return this;
+    }
 }

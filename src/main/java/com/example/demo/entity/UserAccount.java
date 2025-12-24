@@ -110,4 +110,7 @@ public class UserAccount {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+    public Object getBody() {
+        return this;
+    }
 }
