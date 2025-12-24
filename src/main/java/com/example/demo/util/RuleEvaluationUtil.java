@@ -20,6 +20,6 @@ public class RuleEvaluationUtil {
     }
 
     public void evaluateLoginEvent(LoginEvent event) {
-        // logic handled in tests, keep method present
+    
     }
 }
