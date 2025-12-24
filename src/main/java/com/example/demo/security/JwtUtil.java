@@ -18,7 +18,7 @@ public class JwtUtil {
     private final boolean isTestMode;
 
     public JwtUtil(
-            @Value("${jwt.secret:my-secret-key-my-secret-key-my-secret-key}") String secret,
+            @Value("${jwt.secret:ThisIsASuperSecureJwtSecretKeyWithAtLeast32Chars!!}") String secret,
             @Value("${jwt.validity:3600000}") long validityInMs,
             @Value("${jwt.testMode:false}") boolean isTestMode
     ) {
