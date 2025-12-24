@@ -4,10 +4,12 @@ import com.example.demo.entity.ViolationRecord;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.ViolationRecordRepository;
 import com.example.demo.service.ViolationRecordService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class ViolationRecordServiceImpl implements ViolationRecordService {
 
     private final ViolationRecordRepository violationRepo;
