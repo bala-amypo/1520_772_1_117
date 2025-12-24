@@ -16,6 +16,11 @@ public class PolicyRuleController {
         this.ruleService = ruleService;
     }
 
+    @GetMapping("/all")
+    public List<PolicyRule> all() {
+        return ruleService.getAllRules();
+    }
+
     @PostMapping
     public PolicyRule create(@RequestBody PolicyRule rule) {
         return ruleService.createRule(rule);

@@ -5,7 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RuleEvaluationUtil {
-
+    public RuleEvaluationUtil() {
+    }
     public void evaluateLoginEvent(LoginEvent event) {
     }
 }
