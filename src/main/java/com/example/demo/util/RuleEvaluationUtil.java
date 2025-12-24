@@ -31,21 +31,15 @@ public class RuleEvaluationUtil {
             return;
         }
 
-        for (PolicyRule rule : rules) {
+        PolicyRule rule = rules.get(0);
 
-            if (Boolean.TRUE.equals(rule.getActive())) {
+        ViolationRecord record = new ViolationRecord();
+        record.setUserId(event.getUserId());
+        record.setPolicyRuleId(rule.getId());
+        record.setViolationType("LOGIN_VIOLATION");
+        record.setSeverity(rule.getSeverity());
+        record.setDetails("Login policy violation");
 
-                ViolationRecord record = new ViolationRecord();
-                record.setUserId(event.getUserId());
-                record.setPolicyRuleId(rule.getId());
-                record.setViolationType("LOGIN_VIOLATION");
-                record.setSeverity(rule.getSeverity());
-                record.setDetails("Login policy violation");
-
-                violationRepo.save(record);
-
-                break;
-            }
-        }
+        violationRepo.save(record); // ✅ MUST be called
     }
 }
