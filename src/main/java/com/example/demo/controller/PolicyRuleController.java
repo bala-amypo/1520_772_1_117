@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.PolicyRule;
 import com.example.demo.service.PolicyRuleService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class PolicyRuleController {
     }
 
     @GetMapping("/all")
-    public List<PolicyRule> all() {
-        return ruleService.getAllRules();
+    public ResponseEntity<List<PolicyRule>> all() {
+        return ResponseEntity.ok(ruleService.getAllRules());
     }
 }
