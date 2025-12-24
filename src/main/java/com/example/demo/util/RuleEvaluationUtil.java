@@ -27,7 +27,7 @@ public class RuleEvaluationUtil {
 
         List<PolicyRule> rules = policyRuleRepository.findAll();
 
-        if (rules == null || rules.isEmpty()) {
+        if (rules.isEmpty()) {
             return;
         }
 
@@ -35,9 +35,11 @@ public class RuleEvaluationUtil {
 
         ViolationRecord record = new ViolationRecord();
         record.setUserId(event.getUserId());
+        record.setEventId(event.getId());
         record.setPolicyRuleId(rule.getId());
-        record.setViolationType("LOGIN_VIOLATION");
+        record.setViolationType("LOGIN_POLICY");
         record.setSeverity(rule.getSeverity());
+        record.setDetails("Policy violation detected");
         record.setResolved(false);
 
         violationRecordRepository.save(record);
