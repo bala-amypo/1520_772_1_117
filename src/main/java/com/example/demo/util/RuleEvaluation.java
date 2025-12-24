@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class RuleEvaluatior {
+public class RuleEvaluationUtil {
 
     private final PolicyRuleRepository policyRuleRepository;
     private final ViolationRecordRepository violationRepo;
 
-    public RuleEvaluatior(
+    public RuleEvaluationUtil(
             PolicyRuleRepository policyRuleRepository,
             ViolationRecordRepository violationRepo
     ) {
