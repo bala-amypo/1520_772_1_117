@@ -1,13 +1,13 @@
 package com.example.demo.util;
 
-import java.util.List;
-
 import com.example.demo.entity.LoginEvent;
 import com.example.demo.entity.PolicyRule;
 import com.example.demo.entity.ViolationRecord;
 import com.example.demo.repository.PolicyRuleRepository;
 import com.example.demo.repository.ViolationRecordRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class RuleEvaluationUtil {
@@ -25,24 +25,18 @@ public class RuleEvaluationUtil {
 
     public void evaluateLoginEvent(LoginEvent event) {
 
-        if (event.getIpAddress() == null || event.getDeviceId() == null) {
-            return;
-        }
-
         List<PolicyRule> rules = policyRuleRepository.findAll();
 
         if (rules.isEmpty()) {
             return;
         }
 
-        PolicyRule rule = rules.get(0);
-
         ViolationRecord record = new ViolationRecord();
         record.setUserId(event.getUserId());
-        record.setPolicyRuleId(rule.getId());
         record.setViolationType("LOGIN_VIOLATION");
-        record.setSeverity(rule.getSeverity());
-        record.setDetails("Login policy violated");
+        record.setPolicyRuleId(rules.get(0).getId());
+        record.setSeverity(rules.get(0).getSeverity());
+        record.setResolved(false);
 
         violationRecordRepository.save(record);
     }
