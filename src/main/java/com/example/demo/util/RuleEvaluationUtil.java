@@ -40,6 +40,6 @@ public class RuleEvaluationUtil {
         record.setSeverity(rule.getSeverity());
         record.setDetails("Login policy violation");
 
-        violationRepo.save(record); // ✅ MUST be called
+        violationRepo.save(record);
     }
 }
