@@ -1,10 +1,13 @@
 package com.example.demo.util;
 
+import java.util.List;
+
 import com.example.demo.entity.LoginEvent;
 import com.example.demo.entity.ViolationRecord;
 import com.example.demo.repository.PolicyRuleRepository;
 import com.example.demo.repository.ViolationRecordRepository;
 import org.springframework.stereotype.Component;
+import com.example.demo.entity.PolicyRule;
 
 @Component
 public class RuleEvaluationUtil {
@@ -22,11 +25,9 @@ public class RuleEvaluationUtil {
 
     public void evaluateLoginEvent(LoginEvent event) {
 
-        if (event.getIpAddress() == null || event.getDeviceId() == null) {
-            throw new IllegalArgumentException("IP address and deviceId required");
-        }
+        List<PolicyRule> rules = policyRuleRepository.findAll();
 
-        if (policyRuleRepository.findAll().isEmpty()) {
+        if (rules == null || rules.isEmpty()) {
             return;
         }
 
