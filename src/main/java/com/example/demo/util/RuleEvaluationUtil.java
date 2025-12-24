@@ -27,21 +27,25 @@ public class RuleEvaluationUtil {
 
         List<PolicyRule> rules = policyRuleRepository.findAll();
 
-        if (rules.isEmpty()) {
+        if (rules == null || rules.isEmpty()) {
             return;
         }
 
-        PolicyRule rule = rules.get(0);
+        for (PolicyRule rule : rules) {
 
-        ViolationRecord record = new ViolationRecord();
-        record.setUserId(event.getUserId());
-        record.setEventId(event.getId());
-        record.setPolicyRuleId(rule.getId());
-        record.setViolationType("LOGIN_POLICY");
-        record.setSeverity(rule.getSeverity());
-        record.setDetails("Policy violation detected");
-        record.setResolved(false);
+            if (Boolean.TRUE.equals(rule.getActive())) {
 
-        violationRecordRepository.save(record);
+                ViolationRecord record = new ViolationRecord();
+                record.setUserId(event.getUserId());
+                record.setPolicyRuleId(rule.getId());
+                record.setViolationType("LOGIN_VIOLATION");
+                record.setSeverity(rule.getSeverity());
+                record.setDetails("Login policy violation");
+
+                violationRecordRepository.save(record);
+
+                break;
+            }
+        }
     }
 }
