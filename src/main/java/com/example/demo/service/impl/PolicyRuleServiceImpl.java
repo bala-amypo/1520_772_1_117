@@ -1,9 +1,10 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.PolicyRule;
-import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.entity.ViolationRecord;
 import com.example.demo.repository.PolicyRuleRepository;
 import com.example.demo.service.PolicyRuleService;
+import com.example.demo.service.ViolationRecordService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +14,13 @@ import java.util.Optional;
 public class PolicyRuleServiceImpl implements PolicyRuleService {
 
     private final PolicyRuleRepository ruleRepo;
+    private final ViolationRecordService violationService;
 
-    public PolicyRuleServiceImpl(PolicyRuleRepository ruleRepo) {
+    // ✅ UPDATED CONSTRUCTOR
+    public PolicyRuleServiceImpl(PolicyRuleRepository ruleRepo,
+                                 ViolationRecordService violationService) {
         this.ruleRepo = ruleRepo;
+        this.violationService = violationService;
     }
 
     @Override
@@ -28,15 +33,13 @@ public class PolicyRuleServiceImpl implements PolicyRuleService {
         return ruleRepo.save(rule);
     }
 
-    @Override
-    public PolicyRule updateRule(Long id, PolicyRule updated) {
-        PolicyRule existing = ruleRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
-        existing.setDescription(updated.getDescription());
-        existing.setSeverity(updated.getSeverity());
-        existing.setConditionsJson(updated.getConditionsJson());
-        existing.setActive(updated.getActive());
-        return ruleRepo.save(existing);
+    public void evaluateAndTriggerViolation(boolean violated, Long userId, String ruleCode) {
+        if (violated) {
+            ViolationRecord record = new ViolationRecord();
+            record.setUserId(userId);
+            record.setRuleCode(ruleCode);
+            violationService.logViolation(record);
+        }
     }
 
     @Override
