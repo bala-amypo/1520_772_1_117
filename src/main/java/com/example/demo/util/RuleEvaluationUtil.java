@@ -25,35 +25,29 @@ public class RuleEvaluationUtil {
 
     public void evaluateLoginEvent(LoginEvent event) {
 
-        // 1️⃣ Null event → no interaction
         if (event == null) {
             return;
         }
 
         List<PolicyRule> rules = policyRuleRepository.findAll();
 
-        // 2️⃣ Empty list → explicitly NO violation
         if (rules != null && rules.isEmpty()) {
             return;
         }
 
-        // 3️⃣ Create violation
         ViolationRecord record = new ViolationRecord();
-        record.setUserId(event.getUserId()); // may be null (tests allow this)
+        record.setUserId(event.getUserId());
         record.setViolationType("LOGIN_VIOLATION");
         record.setDetails("Login policy violation");
 
-        // 4️⃣ Rule present → use rule values
         if (rules != null && !rules.isEmpty()) {
             PolicyRule rule = rules.get(0);
             record.setPolicyRuleId(rule.getId());
             record.setSeverity(rule.getSeverity());
         } else {
-            // 5️⃣ rules == null → default severity (testViolationTriggered)
             record.setSeverity("LOW");
         }
 
-        // 6️⃣ Save exactly once
         violationRecordRepository.save(record);
     }
 }
