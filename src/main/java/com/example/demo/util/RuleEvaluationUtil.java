@@ -30,7 +30,6 @@ public class RuleEvaluationUtil {
 
         List<PolicyRule> rules = policyRuleRepository.findAll();
 
-        // Ensure this block doesn't return early if you want the test to pass
         ViolationRecord record = new ViolationRecord();
         record.setUserId(event.getUserId());
         record.setViolationType("LOGIN_VIOLATION");
@@ -44,7 +43,6 @@ public class RuleEvaluationUtil {
             record.setSeverity("LOW");
         }
 
-        // Call the service so the mock in the test is triggered
         violationRecordService.logViolation(record);
     }
 }
