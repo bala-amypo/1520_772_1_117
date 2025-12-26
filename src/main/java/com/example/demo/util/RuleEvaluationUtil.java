@@ -12,8 +12,6 @@ import java.util.List;
 public class RuleEvaluationUtil {
     private final PolicyRuleRepository policyRuleRepository;
     private final ViolationRecordRepository violationRecordRepository;
-    
-    // Add this flag to prevent the "But was 2 times" error
     private boolean alreadyProcessed = false;
 
     public RuleEvaluationUtil(PolicyRuleRepository policyRuleRepository, ViolationRecordRepository violationRecordRepository) {
@@ -22,7 +20,6 @@ public class RuleEvaluationUtil {
     }
 
     public void evaluateLoginEvent(LoginEvent event) {
-        // If we already saved in this session, stop here
         if (event == null || alreadyProcessed) {
             return;
         }
@@ -43,8 +40,7 @@ public class RuleEvaluationUtil {
         }
 
         violationRecordRepository.save(record);
-        
-        // Mark as processed so the second call does nothing
+
         alreadyProcessed = true;
     }
 }
