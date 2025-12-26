@@ -4,7 +4,7 @@ import com.example.demo.entity.LoginEvent;
 import com.example.demo.entity.PolicyRule;
 import com.example.demo.entity.ViolationRecord;
 import com.example.demo.repository.PolicyRuleRepository;
-import com.example.demo.service.ViolationRecordService; // <--- ADD THIS IMPORT
+import com.example.demo.repository.ViolationRecordRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,7 +13,8 @@ import java.util.List;
 public class RuleEvaluationUtil {
 
     private final PolicyRuleRepository policyRuleRepository;
-    private final ViolationRecordService violationRecordService;
+    // CHANGE: Use the Service, not the Repository directly
+    private final ViolationRecordService violationRecordService; 
 
     public RuleEvaluationUtil(
             PolicyRuleRepository policyRuleRepository,
@@ -24,11 +25,13 @@ public class RuleEvaluationUtil {
     }
 
     public void evaluateLoginEvent(LoginEvent event) {
-        if (event == null) {
-            return;
-        }
+        if (event == null) return;
 
         List<PolicyRule> rules = policyRuleRepository.findAll();
+
+        if (rules == null || rules.isEmpty()) {
+
+        }
 
         ViolationRecord record = new ViolationRecord();
         record.setUserId(event.getUserId());
@@ -43,6 +46,6 @@ public class RuleEvaluationUtil {
             record.setSeverity("LOW");
         }
 
-        violationRecordService.logViolation(record);
+        violationRecordService.logViolation(record); 
     }
 }
