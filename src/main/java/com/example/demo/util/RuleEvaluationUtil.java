@@ -25,6 +25,10 @@ public class RuleEvaluationUtil {
 
     public void evaluateLoginEvent(LoginEvent event) {
 
+        if (event == null) {
+            return;
+        }
+
         ViolationRecord record = new ViolationRecord();
         record.setUserId(event.getUserId());
         record.setViolationType("LOGIN_VIOLATION");
