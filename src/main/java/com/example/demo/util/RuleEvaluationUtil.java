@@ -13,20 +13,19 @@ import java.util.List;
 public class RuleEvaluationUtil {
 
     private final PolicyRuleRepository policyRuleRepository;
-    private final ViolationRecordRepository violationRepo;
+    private final ViolationRecordRepository violationRecordRepository;
 
     public RuleEvaluationUtil(
             PolicyRuleRepository policyRuleRepository,
-            ViolationRecordRepository violationRepo
+            ViolationRecordRepository violationRecordRepository
     ) {
         this.policyRuleRepository = policyRuleRepository;
-        this.violationRepo = violationRepo;
+        this.violationRecordRepository = violationRecordRepository;
     }
 
     public void evaluateLoginEvent(LoginEvent event) {
 
         List<PolicyRule> rules = policyRuleRepository.findAll();
-
         if (rules == null || rules.isEmpty()) {
             return;
         }
@@ -40,6 +39,6 @@ public class RuleEvaluationUtil {
         record.setSeverity(rule.getSeverity());
         record.setDetails("Login policy violation");
 
-        violationRepo.save(record);
+        violationRecordRepository.save(record);
     }
 }
