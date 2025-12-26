@@ -31,10 +31,6 @@ public class RuleEvaluationUtil {
 
         List<PolicyRule> rules = policyRuleRepository.findAll();
 
-        if (rules != null && rules.isEmpty()) {
-            return;
-        }
-
         ViolationRecord record = new ViolationRecord();
         record.setUserId(event.getUserId());
         record.setViolationType("LOGIN_VIOLATION");
