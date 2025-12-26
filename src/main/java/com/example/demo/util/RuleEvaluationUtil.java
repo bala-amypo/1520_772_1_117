@@ -40,6 +40,6 @@ public class RuleEvaluationUtil {
             record.setSeverity("LOW");
         }
 
-        violationRepo.save(record);
+        violationRecordRepository.save(record);
     }
 }
