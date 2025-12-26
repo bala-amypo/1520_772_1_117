@@ -25,6 +25,7 @@ public class RuleEvaluationUtil {
 
     public void evaluateLoginEvent(LoginEvent event) {
 
+        // ✅ must not crash
         if (event == null) {
             return;
         }
@@ -34,12 +35,16 @@ public class RuleEvaluationUtil {
         record.setViolationType("LOGIN_VIOLATION");
         record.setDetails("Login policy violation");
 
-        List<PolicyRule> rules = policyRuleRepository.findAll();
+        if (policyRuleRepository != null) {
+            List<PolicyRule> rules = policyRuleRepository.findAll();
 
-        if (rules != null && !rules.isEmpty()) {
-            PolicyRule rule = rules.get(0);
-            record.setPolicyRuleId(rule.getId());
-            record.setSeverity(rule.getSeverity());
+            if (rules != null && !rules.isEmpty()) {
+                PolicyRule rule = rules.get(0);
+                record.setPolicyRuleId(rule.getId());
+                record.setSeverity(rule.getSeverity());
+            } else {
+                record.setSeverity("LOW");
+            }
         } else {
             record.setSeverity("LOW");
         }
