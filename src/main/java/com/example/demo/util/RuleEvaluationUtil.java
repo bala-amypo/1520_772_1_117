@@ -31,8 +31,8 @@ public class RuleEvaluationUtil {
 
         List<PolicyRule> rules = policyRuleRepository.findAll();
 
-        if (rules != null && rules.isEmpty()) {
-            return;
+        if (rules == null) {
+            rules = Collections.emptyList();
         }
 
         ViolationRecord record = new ViolationRecord();
