@@ -25,12 +25,13 @@ public class RuleEvaluationUtil {
 
     public void evaluateLoginEvent(LoginEvent event) {
 
-        if (event == null || event.getUserId() == null) {
+        // ✅ ONLY check for null event
+        if (event == null) {
             return;
         }
 
         ViolationRecord record = new ViolationRecord();
-        record.setUserId(event.getUserId());
+        record.setUserId(event.getUserId()); // can be null — tests expect this
         record.setViolationType("LOGIN_VIOLATION");
         record.setDetails("Login policy violation");
 
@@ -41,9 +42,11 @@ public class RuleEvaluationUtil {
             record.setPolicyRuleId(rule.getId());
             record.setSeverity(rule.getSeverity());
         } else {
+            // default severity required by tests
             record.setSeverity("LOW");
         }
 
+        // ✅ ALWAYS save if event is not null
         violationRecordRepository.save(record);
     }
 }
