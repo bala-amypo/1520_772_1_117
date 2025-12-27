@@ -32,7 +32,11 @@ public class LoginEventServiceImpl implements LoginEventService {
             event.setTimestamp(LocalDateTime.now());
         }
         LoginEvent saved = loginRepo.save(event);
-        ruleEvaluator.evaluateLoginEvent(saved);
+        try{
+            ruleEvaluator.evaluateLoginEvent(saved);
+        }catch(Exception ex){
+            System.err.println("Rule evaluation failed: " + ex.getMessage());
+        }
         return saved;
     }
 
