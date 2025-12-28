@@ -33,7 +33,7 @@ public class AuthController {
                 request.getEmployeeId(),
                 request.getUsername(),
                 request.getEmail(),
-                passwordEncoder.encode(request.getPassword()), // ✅ encode password
+                passwordEncoder.encode(request.getPassword()),
                 request.getRole(),
                 "ACTIVE",
                 null
