@@ -61,7 +61,7 @@ public class AuthController {
         UserAccount user = userAccountService.findByUsername(request.getUsernameOrEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
         
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(passwordEncoder.encode(request.getPassword()), user.getPassword())) {
                 throw new IllegalArgumentException("Invalid credentials");
         }
         
