@@ -35,7 +35,21 @@ public class AuthController {
                 null,
                 null
         );
-        return userAccountService.createUser(user);
+         UserAccount saved = userAccountService.createUser(user);
+
+        String token = jwtUtil.generateToken(
+                saved.getUsername(),
+                saved.getId(),
+                saved.getEmail(),
+                saved.getRole()
+        );
+
+        return new JwtResponse(
+                token,
+                saved.getId(),
+                saved.getEmail(),
+                saved.getRole()
+        );
     }
 
     @PostMapping("/login")
