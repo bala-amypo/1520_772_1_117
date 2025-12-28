@@ -57,7 +57,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-        public JwtResponse login(@RequestBody LoginRequest request) {
+    public JwtResponse login(@RequestBody LoginRequest request) {
         UserAccount user = userAccountService.findByUsername(request.getUsernameOrEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
         
@@ -73,5 +73,5 @@ public class AuthController {
         );
         
         return new JwtResponse(token, user.getId(), user.getEmail(), user.getRole());
-}
+    }
 }
