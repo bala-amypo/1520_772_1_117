@@ -58,11 +58,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest request) {
-        UserAccount user = userAccountService
-                .findByUsername(request.getUsernameOrEmail())
-                .or(() -> userAccountService.findByEmail(request.getUsernameOrEmail()))
+        UserAccount user = userAccountService.findByUsername(request.getUsernameOrEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
-
         
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
                 throw new IllegalArgumentException("Invalid credentials");
