@@ -17,25 +17,30 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public AuthController(UserAccountService userAccountService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public AuthController(UserAccountService userAccountService,
+                          PasswordEncoder passwordEncoder,
+                          JwtUtil jwtUtil) {
         this.userAccountService = userAccountService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
 
+    // ================= REGISTER =================
     @PostMapping("/register")
-    public UserAccount register(@RequestBody RegisterRequest request) {
+    public JwtResponse register(@RequestBody RegisterRequest request) {
+
         UserAccount user = new UserAccount(
                 null,
                 request.getEmployeeId(),
                 request.getUsername(),
                 request.getEmail(),
-                request.getPassword(),
+                passwordEncoder.encode(request.getPassword()), // ✅ encode password
                 request.getRole(),
-                null,
+                "ACTIVE",
                 null
         );
-         UserAccount saved = userAccountService.createUser(user);
+
+        UserAccount saved = userAccountService.createUser(user);
 
         String token = jwtUtil.generateToken(
                 saved.getUsername(),
@@ -52,9 +57,12 @@ public class AuthController {
         );
     }
 
+    // ================= LOGIN =================
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest request) {
-        UserAccount user = userAccountService.findByUsername(request.getUsernameOrEmail())
+
+        UserAccount user = userAccountService
+                .findByUsername(request.getUsernameOrEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -68,6 +76,11 @@ public class AuthController {
                 user.getRole()
         );
 
-        return new JwtResponse(token, user.getId(), user.getEmail(), user.getRole());
+        return new JwtResponse(
+                token,
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
     }
 }
