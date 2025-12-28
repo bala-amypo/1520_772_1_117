@@ -57,7 +57,6 @@ public class AuthController {
         );
     }
 
-    // ================= LOGIN =================
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest request) {
 
