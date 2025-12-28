@@ -25,7 +25,6 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    // ================= REGISTER =================
     @PostMapping("/register")
     public JwtResponse register(@RequestBody RegisterRequest request) {
 
@@ -58,28 +57,21 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public JwtResponse login(@RequestBody LoginRequest request) {
-
-        UserAccount user = userAccountService
-                .findByUsername(request.getUsernameOrEmail())
+        public JwtResponse login(@RequestBody LoginRequest request) {
+        UserAccount user = userAccountService.findByUsername(request.getUsernameOrEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
-
+        
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalid credentials");
+                throw new IllegalArgumentException("Invalid credentials");
         }
-
+        
         String token = jwtUtil.generateToken(
                 user.getUsername(),
                 user.getId(),
                 user.getEmail(),
                 user.getRole()
         );
-
-        return new JwtResponse(
-                token,
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
-        );
-    }
+        
+        return new JwtResponse(token, user.getId(), user.getEmail(), user.getRole());
+}
 }
