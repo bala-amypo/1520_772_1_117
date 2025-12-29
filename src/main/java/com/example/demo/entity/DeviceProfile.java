@@ -105,7 +105,7 @@ public class DeviceProfile {
     }
 
     @JsonIgnore
-    public Object getBody() {
+    public DeviceProfile getBody() {
         return this;
     }
 }
