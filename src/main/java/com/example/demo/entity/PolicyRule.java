@@ -95,7 +95,7 @@ public class PolicyRule {
     }
 
     @JsonIgnore
-    public Object getBody() {
+    public PolicyRule getBody() {
         return this;
     }
 }
