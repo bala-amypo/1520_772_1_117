@@ -1,10 +1,13 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "device_profiles")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class DeviceProfile {
 
     @Id
@@ -21,7 +24,15 @@ public class DeviceProfile {
     public DeviceProfile() {
     }
 
-    public DeviceProfile(Long id, Long userId, String deviceId, String deviceType, String osVersion, LocalDateTime lastSeen, Boolean isTrusted) {
+    public DeviceProfile(
+            Long id,
+            Long userId,
+            String deviceId,
+            String deviceType,
+            String osVersion,
+            LocalDateTime lastSeen,
+            Boolean isTrusted
+    ) {
         this.id = id;
         this.userId = userId;
         this.deviceId = deviceId;
@@ -92,7 +103,9 @@ public class DeviceProfile {
     public void setIsTrusted(Boolean isTrusted) {
         this.isTrusted = isTrusted;
     }
-    public DeviceProfile getBody() {
+
+    @JsonIgnore
+    public Object getBody() {
         return this;
     }
 }
