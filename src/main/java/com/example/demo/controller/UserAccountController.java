@@ -18,7 +18,17 @@ public class UserAccountController {
 
     @PostMapping
     public UserAccount create(@RequestBody UserAccount user) {
-        return userService.createUser(user);
+        UserAccount savedUser = userService.createUser(user);
+
+        UserAccountResponse response = new UserAccountResponse(
+                savedUser.getId(),
+                savedUser.getUsername(),
+                savedUser.getEmail(),
+                savedUser.getRole(),
+                savedUser.getStatus()
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
