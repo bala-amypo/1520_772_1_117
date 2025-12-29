@@ -1,11 +1,17 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "policy_rules", uniqueConstraints = {
+@Table(
+    name = "policy_rules",
+    uniqueConstraints = {
         @UniqueConstraint(columnNames = "ruleCode")
-})
+    }
+)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PolicyRule {
 
     @Id
@@ -15,14 +21,23 @@ public class PolicyRule {
     private String ruleCode;
     private String description;
     private String severity;
+
     @Column(columnDefinition = "TEXT")
     private String conditionsJson;
+
     private Boolean active;
 
     public PolicyRule() {
     }
 
-    public PolicyRule(Long id, String ruleCode, String description, String severity, String conditionsJson, Boolean active) {
+    public PolicyRule(
+            Long id,
+            String ruleCode,
+            String description,
+            String severity,
+            String conditionsJson,
+            Boolean active
+    ) {
         this.id = id;
         this.ruleCode = ruleCode;
         this.description = description;
@@ -77,5 +92,10 @@ public class PolicyRule {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    @JsonIgnore
+    public Object getBody() {
+        return this;
     }
 }
