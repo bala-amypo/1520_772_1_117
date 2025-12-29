@@ -1,14 +1,20 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_accounts", uniqueConstraints = {
+@Table(
+    name = "user_accounts",
+    uniqueConstraints = {
         @UniqueConstraint(columnNames = "employeeId"),
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
-})
+    }
+)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UserAccount {
 
     @Id
@@ -18,7 +24,10 @@ public class UserAccount {
     private String employeeId;
     private String username;
     private String email;
+
+    @JsonIgnore
     private String password;
+
     private String role;
     private String status;
     private LocalDateTime createdAt;
@@ -26,7 +35,16 @@ public class UserAccount {
     public UserAccount() {
     }
 
-    public UserAccount(Long id, String employeeId, String username, String email, String password, String role, String status, LocalDateTime createdAt) {
+    public UserAccount(
+            Long id,
+            String employeeId,
+            String username,
+            String email,
+            String password,
+            String role,
+            String status,
+            LocalDateTime createdAt
+    ) {
         this.id = id;
         this.employeeId = employeeId;
         this.username = username;
@@ -109,8 +127,5 @@ public class UserAccount {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-    public Object getBody() {
-        return this;
     }
 }
