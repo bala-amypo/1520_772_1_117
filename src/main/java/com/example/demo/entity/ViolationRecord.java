@@ -1,10 +1,13 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "violation_records")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ViolationRecord {
 
     @Id
@@ -15,8 +18,10 @@ public class ViolationRecord {
     private Long policyRuleId;
     private Long eventId;
     private String violationType;
+
     @Column(columnDefinition = "TEXT")
     private String details;
+
     private String severity;
     private LocalDateTime detectedAt;
     private Boolean resolved;
@@ -24,7 +29,17 @@ public class ViolationRecord {
     public ViolationRecord() {
     }
 
-    public ViolationRecord(Long id, Long userId, Long policyRuleId, Long eventId, String violationType, String details, String severity, LocalDateTime detectedAt, Boolean resolved) {
+    public ViolationRecord(
+            Long id,
+            Long userId,
+            Long policyRuleId,
+            Long eventId,
+            String violationType,
+            String details,
+            String severity,
+            LocalDateTime detectedAt,
+            Boolean resolved
+    ) {
         this.id = id;
         this.userId = userId;
         this.policyRuleId = policyRuleId;
@@ -117,6 +132,8 @@ public class ViolationRecord {
     public void setResolved(Boolean resolved) {
         this.resolved = resolved;
     }
+
+    @JsonIgnore
     public Object getBody() {
         return this;
     }
