@@ -32,7 +32,14 @@ public class UserAccount {
 
     public UserAccount() {
     }
-
+    public UserAccount(Long id, String username, String email,
+                   String role, String status) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+        this.status = status;
+    }
     public UserAccount(Long id, String username, String email,
                        String password, String role, String status) {
         this.id = id;
