@@ -1,10 +1,13 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "login_events")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LoginEvent {
 
     @Id
@@ -21,7 +24,15 @@ public class LoginEvent {
     public LoginEvent() {
     }
 
-    public LoginEvent(Long id, Long userId, String ipAddress, String location, String deviceId, LocalDateTime timestamp, String loginStatus) {
+    public LoginEvent(
+            Long id,
+            Long userId,
+            String ipAddress,
+            String location,
+            String deviceId,
+            LocalDateTime timestamp,
+            String loginStatus
+    ) {
         this.id = id;
         this.userId = userId;
         this.ipAddress = ipAddress;
@@ -92,5 +103,10 @@ public class LoginEvent {
 
     public void setLoginStatus(String loginStatus) {
         this.loginStatus = loginStatus;
+    }
+
+    @JsonIgnore
+    public Object getBody() {
+        return this;
     }
 }
